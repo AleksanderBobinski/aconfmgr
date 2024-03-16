@@ -1254,13 +1254,8 @@ function AconfInstallNative() {
 	fi
 
 	local target_packages=("$@")
-	if [[ $prompt_mode == never ]]
-	then
-		# Some prompts default to 'no'
-		( yes || true ) | sudo "${pacman_opts[@]}" --confirm --sync "${asdeps_arr[@]}" "${target_packages[@]}"
-	else
-		sudo "${pacman_opts[@]}" --sync "${asdeps_arr[@]}" "${target_packages[@]}"
-	fi
+	noconfirm="$([ $prompt_mode = "never" ] && echo '--noconfirm')"
+	sudo "${pacman_opts[@]}" "$noconfirm" --sync "${asdeps_arr[@]}" "${target_packages[@]}"
 }
 
 function AconfInstallForeign() {
